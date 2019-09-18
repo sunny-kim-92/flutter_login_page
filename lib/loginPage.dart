@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        appBar: AppBar(title: Text('Profile')),
+        appBar: AppBar(title: Text('Shipment Details')),
         body: Column(children: <Widget>[
           Flexible(
               child: PageView(
