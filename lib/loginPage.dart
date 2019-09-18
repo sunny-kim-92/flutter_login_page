@@ -165,9 +165,4 @@ class _LoginPageState extends State<LoginPage> {
           )
         ]));
   }
-
-  _showSuccess(BuildContext context) {
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(content: Text('Saving...')));
-  }
 }
