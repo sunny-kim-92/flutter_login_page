@@ -80,9 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   SwitchListTile(
                                       title: const Text('Overweight Shipment'),
-                                      value: _pageOne.newsletter,
+                                      value: _pageOne.overweight,
                                       onChanged: (bool val) => setState(
-                                          () => _pageOne.newsletter = val)),
+                                          () => _pageOne.overweight = val)),
                                   Container(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 50, 0, 20),
@@ -150,9 +150,6 @@ class _LoginPageState extends State<LoginPage> {
                       form.save();
                       _controller.nextPage(
                           duration: _kDuration, curve: _kCurve);
-                    }
-                    else {
-
                     }
                   },
                 )

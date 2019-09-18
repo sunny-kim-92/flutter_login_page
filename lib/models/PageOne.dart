@@ -10,5 +10,5 @@ class PageOne {
     Heavy: false,
     Chicken: false
   };
-  bool newsletter = false;
+  bool overweight = false;
 }
