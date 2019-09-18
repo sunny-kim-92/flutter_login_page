@@ -37,8 +37,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _controller,
                   children: <Widget>[
                 Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16.0, horizontal: 16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                     child: Builder(
                         builder: (context) => Form(
                             key: _pageOneKey,
@@ -112,8 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                                       }),
                                 ])))),
                 Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16.0, horizontal: 16.0),
+                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
                     child: Builder(
                         builder: (context) => Form(
                             key: _pageTwoKey,
@@ -121,8 +119,6 @@ class _LoginPageState extends State<LoginPage> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   Container(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 50, 0, 20),
                                     child: Text('Chickens'),
                                   ),
                                   SwitchListTile(
