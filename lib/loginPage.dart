@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:validators/validators.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 
 import './models/PageOne.dart';
 import './models/PageTwo.dart';
+
+import 'AdRadio.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,6 +17,19 @@ class _LoginPageState extends State<LoginPage> {
   final _pageTwoKey = GlobalKey<FormState>();
   final _pageOne = PageOne();
   final _pageTwo = PageTwo();
+
+  final _totalDots = 3;
+  int _currentPosition = 0;
+
+  int _validPosition(int position) {
+    if (position >= _totalDots) return _totalDots - 1;
+    if (position < 0) return 0;
+    return position;
+  }
+
+  void _updatePosition(int position) {
+    setState(() => _currentPosition = _validPosition(position));
+  }
 
   ScrollController c;
 
@@ -36,8 +52,10 @@ class _LoginPageState extends State<LoginPage> {
                   physics: NeverScrollableScrollPhysics(),
                   controller: _controller,
                   children: <Widget>[
+                AdRadio(),
                 Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
                     child: Builder(
                         builder: (context) => Form(
                             key: _pageOneKey,
@@ -60,9 +78,9 @@ class _LoginPageState extends State<LoginPage> {
                                         () => _pageOne.streetName = val),
                                   ),
                                   TextFormField(
-                                    initialValue: _pageOne.city,
-                                      decoration: InputDecoration(
-                                          labelText: 'City'),
+                                      initialValue: _pageOne.city,
+                                      decoration:
+                                          InputDecoration(labelText: 'City'),
                                       validator: (value) {
                                         if (value.isEmpty) {
                                           return 'Please enter a valid city';
@@ -137,20 +155,24 @@ class _LoginPageState extends State<LoginPage> {
                   child: Text('Prev'),
                   color: Colors.deepOrange,
                   onPressed: () {
+                    _updatePosition(--_currentPosition);
                     _controller.previousPage(
                         duration: _kDuration, curve: _kCurve);
                   },
                 ),
+                DotsIndicator(dotsCount: _totalDots,
+                position: _currentPosition),
                 FlatButton(
                   child: Text('Next'),
                   color: Colors.green,
                   onPressed: () {
-                    final form = _pageOneKey.currentState;
-                    if (form.validate()) {
-                      form.save();
+                    _updatePosition(++_currentPosition);
+                    // final form = _pageOneKey.currentState;
+                    // if (form.validate()) {
+                      // form.save();
                       _controller.nextPage(
                           duration: _kDuration, curve: _kCurve);
-                    }
+                    // }
                   },
                 )
               ],
