@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 import './models/PageOne.dart';
 import './models/PageTwo.dart';
-import './stepper.dart';
+import './stepperOrigin.dart';
+import './stepperDates.dart';
 
 import 'AdRadio.dart';
 
@@ -21,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final _pageOne = PageOne();
   final _pageTwo = PageTwo();
 
-  final _totalDots = 4;
+  final _totalDots = 7;
   int _currentPosition = 0;
 
   int _validPosition(int position) {
@@ -46,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final formInfo = Provider.of<FormModel>(context);
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(title: Text('Shipment Details')),
@@ -56,8 +56,9 @@ class _LoginPageState extends State<LoginPage> {
                   physics: NeverScrollableScrollPhysics(),
                   controller: _controller,
                   children: <Widget>[
-                StepperBody(),
                 AdRadio(),
+                StepperDate(),
+                StepperBody(),
                 Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   TextFormField(
-                                    initialValue: _pageOne.streetName,
+                                    initialValue: Provider.of<FormModel>(context, listen: false).getStartAdStreet(),
                                     decoration: InputDecoration(
                                         labelText: 'Street Name'),
                                     validator: (value) {
@@ -151,7 +152,15 @@ class _LoginPageState extends State<LoginPage> {
                                           () => _pageTwo.hungry = val)),
                                 ])))),
                 (Consumer<FormModel>(builder: (context, form, child) {
-                  return Text('${form.getPackageType()}');
+                  return Column(children: [
+                    Text('${form.getStartAdStreet()}'),
+                    FlatButton(
+                        child: Text('Next'),
+                        color: Colors.green,
+                        onPressed: () {
+                          print(form.getTest1());
+                        })
+                  ]);
                 }))
               ])),
           Container(

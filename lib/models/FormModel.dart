@@ -17,6 +17,36 @@ class FormModel with ChangeNotifier {
 
   int _price = 0;
 
+
+
+
+
+  String _test1 = '';
+  String _test2 = '';
+  String _test3 = '';
+  String _test4 = '';
+
+  void setTest1(String str) {
+    _test1 = str;
+  }
+  void setTest2(String str) {
+    _test2 = str;
+  }
+  void setTest3(String str) {
+    _test3 = str;
+  }
+  void setTest4(String str) {
+    _test4 = str;
+  }
+
+  getTest1() => _test1;
+  getTest2() => _test2;
+
+
+
+
+
+
   FormModel(
       this._packageType,
       this._startAdNum,

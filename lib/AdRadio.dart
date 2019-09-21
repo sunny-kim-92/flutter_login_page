@@ -30,10 +30,6 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
                 color: animValues[1],
-                // border: Border.all(
-                //   color: animValues[2],
-                //   width: 2.0
-                // )
               ),
               child: Text(
                 value,
@@ -47,26 +43,13 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
 
   RadioBuilder<String, dynamic> dynamicBuilder;
 
-  // AnimationController _controller;
-
   String _radioValue;
 
   @override
   void initState() {
     super.initState();
-    _radioValue = '';
-    // _controller =
-    //     AnimationController(duration: Duration(milliseconds: 50), vsync: this);
-    // _controller.addListener(() {
-    //   setState(() {});
-    // });
+    _radioValue = Provider.of<FormModel>(context, listen: false).getPackageType();
   }
-
-  // @override
-  // void dispose() {
-  //   _controller?.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
