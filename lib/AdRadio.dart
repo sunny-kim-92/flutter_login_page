@@ -1,5 +1,8 @@
 import 'package:custom_radio/custom_radio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import './models/FormModel.dart';
 
 class AdRadio extends StatefulWidget {
   AdRadio({Key key}) : super(key: key);
@@ -12,11 +15,13 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
   _AdRadioState() {
     dynamicBuilder = (BuildContext context, List<dynamic> animValues,
         Function updateState, String value) {
+      final formInfo = Provider.of<FormModel>(context);
       return GestureDetector(
           onTap: () {
             setState(() {
               _radioValue = value;
             });
+            formInfo.setPackageType(value);
           },
           child: Container(
               alignment: Alignment.center,

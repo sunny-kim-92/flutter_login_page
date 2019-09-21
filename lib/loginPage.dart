@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:login_fun/models/FormModel.dart';
 import 'package:validators/validators.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:provider/provider.dart';
+
 
 import './models/PageOne.dart';
 import './models/PageTwo.dart';
@@ -43,6 +46,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final formInfo = Provider.of<FormModel>(context);
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(title: Text('Shipment Details')),
@@ -145,6 +149,11 @@ class _LoginPageState extends State<LoginPage> {
                                       onChanged: (bool val) => setState(
                                           () => _pageTwo.hungry = val)),
                                 ])))),
+                                (Consumer<FormModel>(
+                                  builder: (context, form, child) {
+                                    return Text('${form.getPackageType()}');
+                                  }
+                                ))
               ])),
           Container(
             child: Row(
