@@ -4,9 +4,9 @@ import 'package:validators/validators.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:provider/provider.dart';
 
-
 import './models/PageOne.dart';
 import './models/PageTwo.dart';
+import './stepper.dart';
 
 import 'AdRadio.dart';
 
@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final _pageOne = PageOne();
   final _pageTwo = PageTwo();
 
-  final _totalDots = 3;
+  final _totalDots = 4;
   int _currentPosition = 0;
 
   int _validPosition(int position) {
@@ -34,15 +34,15 @@ class _LoginPageState extends State<LoginPage> {
     setState(() => _currentPosition = _validPosition(position));
   }
 
+  final _controller = new PageController();
+  static const _kDuration = const Duration(milliseconds: 300);
+  static const _kCurve = Curves.ease;
+
   ScrollController c;
 
   void initState() {
     super.initState();
   }
-
-  final _controller = new PageController();
-  static const _kDuration = const Duration(milliseconds: 300);
-  static const _kCurve = Curves.ease;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
                   physics: NeverScrollableScrollPhysics(),
                   controller: _controller,
                   children: <Widget>[
+                StepperBody(),
                 AdRadio(),
                 Container(
                     padding: const EdgeInsets.symmetric(
@@ -149,11 +150,9 @@ class _LoginPageState extends State<LoginPage> {
                                       onChanged: (bool val) => setState(
                                           () => _pageTwo.hungry = val)),
                                 ])))),
-                                (Consumer<FormModel>(
-                                  builder: (context, form, child) {
-                                    return Text('${form.getPackageType()}');
-                                  }
-                                ))
+                (Consumer<FormModel>(builder: (context, form, child) {
+                  return Text('${form.getPackageType()}');
+                }))
               ])),
           Container(
             child: Row(
@@ -169,8 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                         duration: _kDuration, curve: _kCurve);
                   },
                 ),
-                DotsIndicator(dotsCount: _totalDots,
-                position: _currentPosition),
+                DotsIndicator(
+                    dotsCount: _totalDots, position: _currentPosition),
                 FlatButton(
                   child: Text('Next'),
                   color: Colors.green,
@@ -178,9 +177,8 @@ class _LoginPageState extends State<LoginPage> {
                     _updatePosition(++_currentPosition);
                     // final form = _pageOneKey.currentState;
                     // if (form.validate()) {
-                      // form.save();
-                      _controller.nextPage(
-                          duration: _kDuration, curve: _kCurve);
+                    // form.save();
+                    _controller.nextPage(duration: _kDuration, curve: _kCurve);
                     // }
                   },
                 )
