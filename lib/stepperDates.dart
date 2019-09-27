@@ -12,13 +12,15 @@ class StepperDate extends StatefulWidget {
 class _StepperDateState extends State<StepperDate> {
   int currStep = 0;
   static var _focusNode = FocusNode();
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CalendarController _calendarController;
+  CalendarController _sCalendarController;
+  CalendarController _eCalendarController;
 
   @override
   void initState() {
     super.initState();
-      _calendarController = CalendarController();
+    _eCalendarController = CalendarController();
+    _sCalendarController = CalendarController();
+
     _focusNode.addListener(() {
       setState(() {});
       print('Has focus: $_focusNode.hasFocus');
@@ -30,8 +32,7 @@ class _StepperDateState extends State<StepperDate> {
     final formInfo = Provider.of<FormModel>(context);
 
     return Container(
-      child: Form(
-      key: _formKey,
+        child: Form(
       child: ListView(children: <Widget>[
         Stepper(
           steps: [
@@ -42,7 +43,10 @@ class _StepperDateState extends State<StepperDate> {
                 //state: StepState.error,
                 state: StepState.indexed,
                 content: TableCalendar(
-                  calendarController: _calendarController,
+                  calendarController: _sCalendarController,
+                  onDaySelected: (DateTime sDate, [dummy]) {
+                    formInfo.setStartDate(sDate);
+                  },
                 )),
             Step(
                 title: const Text('Drop Off Date'),
@@ -51,7 +55,11 @@ class _StepperDateState extends State<StepperDate> {
                 //state: StepState.error,
                 state: StepState.indexed,
                 content: TableCalendar(
-                  calendarController: _calendarController,
+                  calendarController: _eCalendarController,
+                  onDaySelected: (DateTime eDate, [dummy]) {
+                    print(eDate);
+                    formInfo.setEndDate(eDate);
+                  },
                 ))
           ],
           type: StepperType.vertical,
@@ -79,17 +87,6 @@ class _StepperDateState extends State<StepperDate> {
               currStep = step;
             });
           },
-        ),
-        RaisedButton(
-          child: Text(
-            'Save details',
-            style: TextStyle(color: Colors.white),
-          ),
-          onPressed: () {
-            final FormState formState = _formKey.currentState;
-            formState.save();
-          },
-          color: Colors.blue,
         ),
       ]),
     ));

@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
         theme: new ThemeData(
-          primarySwatch: Colors.lightGreen,
+          primarySwatch: Colors.purple,
         ),
         home: ChangeNotifierProvider<FormModel>(
           builder: (_) => FormModel('', null, '', '', null, null, '', '', null,

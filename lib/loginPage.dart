@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login_fun/models/FormModel.dart';
+import 'package:login_fun/stepperDestination.dart';
 import 'package:validators/validators.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +9,8 @@ import './models/PageOne.dart';
 import './models/PageTwo.dart';
 import './stepperOrigin.dart';
 import './stepperDates.dart';
-
-import 'AdRadio.dart';
+import './productOptions.dart';
+import './AdRadio.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,8 +18,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _pageOneKey = GlobalKey<FormState>();
-  final _pageTwoKey = GlobalKey<FormState>();
   final _pageOne = PageOne();
   final _pageTwo = PageTwo();
 
@@ -57,19 +56,24 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _controller,
                   children: <Widget>[
                 AdRadio(),
+                ProductOptions(),
                 StepperDate(),
-                StepperBody(),
+                StepperOrigin(),
+                StepperDestination(),
                 Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),
                     child: Builder(
                         builder: (context) => Form(
-                            key: _pageOneKey,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
                                   TextFormField(
-                                    initialValue: Provider.of<FormModel>(context, listen: false).getStartAdStreet(),
+                                    initialValue: Provider.of<FormModel>(
+                                            context,
+                                            listen: false)
+                                        .getStartAdStreet(),
                                     decoration: InputDecoration(
                                         labelText: 'Street Name'),
                                     validator: (value) {
@@ -138,10 +142,10 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
                     child: Builder(
                         builder: (context) => Form(
-                            key: _pageTwoKey,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
                                   Container(
                                     child: Text('Chickens'),
                                   ),
@@ -157,9 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                     FlatButton(
                         child: Text('Next'),
                         color: Colors.green,
-                        onPressed: () {
-                          print(form.getTest1());
-                        })
+                        onPressed: () {})
                   ]);
                 }))
               ])),
@@ -179,18 +181,49 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 DotsIndicator(
                     dotsCount: _totalDots, position: _currentPosition),
-                FlatButton(
-                  child: Text('Next'),
-                  color: Colors.green,
-                  onPressed: () {
-                    _updatePosition(++_currentPosition);
-                    // final form = _pageOneKey.currentState;
-                    // if (form.validate()) {
-                    // form.save();
-                    _controller.nextPage(duration: _kDuration, curve: _kCurve);
-                    // }
-                  },
-                )
+                Consumer<FormModel>(builder: (context, form, child) {
+                  return FlatButton(
+                    child: Text('Next'),
+                    color: Colors.green,
+                    onPressed: () {
+                      print(form.getStartDate());
+                      print(form.getEndDate());
+                      if (_currentPosition == 0) {
+                        _updatePosition(++_currentPosition);
+                        _controller.nextPage(
+                            duration: _kDuration, curve: _kCurve);
+                      } else if (_currentPosition == 2) {
+                        if (form.dateValidate() != 'good') {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Shipment Date Error"),
+                                  content: Text(
+                                      'Shipments require a minimum of 1 day between pickup and dropoff. Please select a new pickup and/or dropoff date'),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        } else {
+                          _updatePosition(++_currentPosition);
+                          _controller.nextPage(
+                              duration: _kDuration, curve: _kCurve);
+                        }
+                      } else {
+                        _updatePosition(++_currentPosition);
+                        _controller.nextPage(
+                            duration: _kDuration, curve: _kCurve);
+                      }
+                    },
+                  );
+                })
               ],
             ),
           ),

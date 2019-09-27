@@ -22,6 +22,7 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
               _radioValue = value;
             });
             formInfo.setPackageType(value);
+            print(formInfo.getPackageType());
           },
           child: Container(
               alignment: Alignment.center,
@@ -48,13 +49,19 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _radioValue = Provider.of<FormModel>(context, listen: false).getPackageType();
+    _radioValue =
+        Provider.of<FormModel>(context, listen: false).getPackageType();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
-      Text('Please select an option'),
+      Container(
+          padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+          child: Text('Please select an option',
+          style: TextStyle(color: Colors.purple,
+          fontSize: 20,
+          fontWeight: FontWeight.bold))),
       Flexible(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -64,9 +71,9 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
               groupValue: _radioValue,
               animsBuilder: (AnimationController controller) => [
                 CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-                ColorTween(begin: Colors.white, end: Colors.deepOrange)
+                ColorTween(begin: Colors.white, end: Colors.purple)
                     .animate(controller),
-                ColorTween(begin: Colors.deepOrange, end: Colors.white)
+                ColorTween(begin: Colors.purple, end: Colors.white)
                     .animate(controller),
               ],
               builder: dynamicBuilder,
@@ -76,9 +83,9 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
               groupValue: _radioValue,
               animsBuilder: (AnimationController controller) => [
                 CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-                ColorTween(begin: Colors.white, end: Colors.deepOrange)
+                ColorTween(begin: Colors.white, end: Colors.purple)
                     .animate(controller),
-                ColorTween(begin: Colors.deepOrange, end: Colors.white)
+                ColorTween(begin: Colors.purple, end: Colors.white)
                     .animate(controller),
               ],
               builder: dynamicBuilder,
@@ -88,13 +95,16 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
               groupValue: _radioValue,
               animsBuilder: (AnimationController controller) => [
                 CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-                ColorTween(begin: Colors.white, end: Colors.deepOrange)
+                ColorTween(begin: Colors.white, end: Colors.purple)
                     .animate(controller),
-                ColorTween(begin: Colors.deepOrange, end: Colors.white)
+                ColorTween(begin: Colors.purple, end: Colors.white)
                     .animate(controller),
               ],
               builder: dynamicBuilder,
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 20)
+            )
           ]))
     ]);
   }
