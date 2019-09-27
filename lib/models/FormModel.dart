@@ -1,4 +1,26 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class Post {
+  final int userId;
+  final int id;
+  final String title;
+  final String body;
+
+  Post({this.userId, this.id, this.title, this.body});
+
+  factory Post.fromJson(Map<String, dynamic> json) {
+    return Post(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
+      body: json['body'],
+    );
+  }
+}
 
 class FormModel with ChangeNotifier {
   String _packageType = '';
@@ -23,6 +45,11 @@ class FormModel with ChangeNotifier {
   DateTime _endDate = new DateTime.now().add(new Duration(milliseconds: 1));
 
   int _price = 0;
+  bool _oversize = false;
+  bool _refridgerated = false;
+  String _notes = '';
+
+  bool _cher = false;
 
   FormModel(
       this._packageType,
@@ -89,6 +116,19 @@ class FormModel with ChangeNotifier {
     return false;
   }
 
+  Future<Post> fetchPost() async {
+    final response =
+        await http.get('https://jsonplaceholder.typicode.com/posts/1');
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON.
+      return Post.fromJson(json.decode(response.body));
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load post');
+    }
+  }
+
   getPackageType() => _packageType;
   getWeight() => _weight;
   getHeight() => _height;
@@ -112,6 +152,10 @@ class FormModel with ChangeNotifier {
   getEndDate() => _endDate;
 
   getPrice() => _price;
+  getOversize() => _oversize;
+  getRefridgerated() => _refridgerated;
+  getNotes() => _notes;
+  getCher() => _cher;
 
   void setStartDate(DateTime date) {
     _startDate = date;
@@ -134,6 +178,10 @@ class FormModel with ChangeNotifier {
 
   void setStartAdStreet(String str) {
     _startAdStreet = str;
+  }
+
+  void setCher(bool b) {
+    _cher = b;
   }
 
   void setStartAdApNum(int n) {
@@ -172,13 +220,59 @@ class FormModel with ChangeNotifier {
     _price = n;
   }
 
-  String dateValidate() {
+  void setOversize(bool b) {
+    _oversize = b;
+  }
+
+  void setRefridgerated(bool b) {
+    _refridgerated = b;
+  }
+
+  void setNotes(String str) {
+    _notes = str;
+  }
+
+  bool dateValidate() {
     if (_endDate == null) {
-      return "Shipments require a minimum of 1 day between pickup and dropoff. Please select a new pickup and/or dropoff date";
+      return false;
     } else if (_endDate.difference(_startDate).inDays < 1) {
-      return "Shipments require a minimum of 1 day between pickup and dropoff. Please select a new pickup and/or dropoff date";
+      return false;
     } else {
-      return 'good';
+      return true;
     }
+  }
+
+  List originValidate() {
+    var oIssues = [];
+    if (_startAdNum == null){
+      oIssues.add(1);
+    }
+    if (_startAdStreet == ''){
+      oIssues.add(2);
+    }
+    if (_startAdCity == ''){
+      oIssues.add(3);
+    }
+    if (_startAdZip == null){
+      oIssues.add(4);
+    }
+    return oIssues;
+  }
+
+  List destinationValidate() {
+    var dIssues = [];
+    if (_endAdNum == null){
+      dIssues.add(1);
+    }
+    if (_endAdStreet == ''){
+      dIssues.add(2);
+    }
+    if (_endAdCity == ''){
+      dIssues.add(3);
+    }
+    if (_endAdZip == null){
+      dIssues.add(4);
+    }
+    return dIssues;
   }
 }

@@ -91,7 +91,7 @@ class _AdRadioState extends State<AdRadio> with SingleTickerProviderStateMixin {
               builder: dynamicBuilder,
             ),
             CustomRadio<String, dynamic>(
-              value: 'Chicken',
+              value: 'Chocolate Chip Cookies',
               groupValue: _radioValue,
               animsBuilder: (AnimationController controller) => [
                 CurvedAnimation(parent: controller, curve: Curves.easeInOut),

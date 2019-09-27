@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:login_fun/models/FormModel.dart';
-import 'package:login_fun/stepperDestination.dart';
-import 'package:validators/validators.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:provider/provider.dart';
 
-import './models/PageOne.dart';
-import './models/PageTwo.dart';
+import './models/FormModel.dart';
+import 'stepperDestination.dart';
 import './stepperOrigin.dart';
 import './stepperDates.dart';
-import './productOptions.dart';
+// import './productOptions.dart';
+import './testPOps.dart';
 import './AdRadio.dart';
+import './ApiPage.dart';
+import './models/PageOne.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,7 +19,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _pageOne = PageOne();
-  final _pageTwo = PageTwo();
 
   final _totalDots = 7;
   int _currentPosition = 0;
@@ -46,6 +45,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final formInfo = Provider.of<FormModel>(context);
+
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(title: Text('Shipment Details')),
@@ -56,10 +57,11 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _controller,
                   children: <Widget>[
                 AdRadio(),
-                ProductOptions(),
+                // ProductOptions(),
                 StepperDate(),
                 StepperOrigin(),
                 StepperDestination(),
+                // ProductOptions(),
                 Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),
@@ -69,101 +71,81 @@ class _LoginPageState extends State<LoginPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
                                     children: [
+                                  Container(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 10, 0, 20),
+                                    child: Text('Options'),
+                                  ),
+                                  SwitchListTile(
+                                      title: const Text('Oversize Shipment'),
+                                      value: _pageOne.oversize,
+                                      onChanged: (bool val) {
+                                        setState(() {
+                                          _pageOne.oversize = val;
+                                        });
+                                        formInfo.setOversize(val);
+                                      }),
+                                  SwitchListTile(
+                                      title: const Text(
+                                          'Refridgerated Transport Required'),
+                                      value: _pageOne.refridgerated,
+                                      onChanged: (bool val) {
+                                        setState(() {
+                                          _pageOne.refridgerated = val;
+                                        });
+                                        formInfo.setRefridgerated(val);
+                                      }),
+                                  CheckboxListTile(
+                                      title: const Text(
+                                          'Do you believe in life after love?'),
+                                      value: _pageOne.cher,
+                                      onChanged: (bool val) {
+                                        setState(() {
+                                          _pageOne.cher = val;
+                                        });
+                                        print(formInfo.getCher());
+                                        formInfo.setCher(val);
+                                        if (val == true) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text("!!"),
+                                                  content: Text(
+                                                      'I can feeeeeeel somethiiiiiiing insiiiiiiiiide me saaay!'),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      child: Text('Cher'),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        }
+                                      }),
+                                  Container(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 50, 0, 20),
+                                    child: Text('Notes'),
+                                  ),
                                   TextFormField(
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: null,
                                     initialValue: Provider.of<FormModel>(
                                             context,
                                             listen: false)
-                                        .getStartAdStreet(),
+                                        .getNotes(),
                                     decoration: InputDecoration(
-                                        labelText: 'Street Name'),
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return 'Please enter a valid street name';
-                                      }
-                                      if (isInt(value)) {
-                                        return 'That is a number';
-                                      }
+                                        labelText: 'Additional Notes'),
+                                    onSaved: (val) {
+                                      formInfo.setNotes(val);
                                     },
-                                    onSaved: (val) => setState(
-                                        () => _pageOne.streetName = val),
-                                  ),
-                                  TextFormField(
-                                      initialValue: _pageOne.city,
-                                      decoration:
-                                          InputDecoration(labelText: 'City'),
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return 'Please enter a valid city';
-                                        }
-                                        if (isInt(value)) {
-                                          return 'That is a number';
-                                        }
-                                      },
-                                      onSaved: (val) =>
-                                          setState(() => _pageOne.city = val)),
-                                  Container(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 50, 0, 20),
-                                    child: Text('Weight'),
-                                  ),
-                                  SwitchListTile(
-                                      title: const Text('Overweight Shipment'),
-                                      value: _pageOne.overweight,
-                                      onChanged: (bool val) => setState(
-                                          () => _pageOne.overweight = val)),
-                                  Container(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(0, 50, 0, 20),
-                                    child: Text('Options'),
-                                  ),
-                                  CheckboxListTile(
-                                      title: const Text('Big'),
-                                      value: _pageOne.options[PageOne.Big],
-                                      onChanged: (val) {
-                                        setState(() => _pageOne
-                                            .options[PageOne.Big] = val);
-                                      }),
-                                  CheckboxListTile(
-                                      title: const Text('Heavy'),
-                                      value: _pageOne.options[PageOne.Heavy],
-                                      onChanged: (val) {
-                                        setState(() => _pageOne
-                                            .options[PageOne.Heavy] = val);
-                                      }),
-                                  CheckboxListTile(
-                                      title: const Text('Chicken'),
-                                      value: _pageOne.options[PageOne.Chicken],
-                                      onChanged: (val) {
-                                        setState(() => _pageOne
-                                            .options[PageOne.Chicken] = val);
-                                      }),
+                                  )
                                 ])))),
-                Container(
-                    padding: const EdgeInsets.fromLTRB(16, 32, 16, 0),
-                    child: Builder(
-                        builder: (context) => Form(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                  Container(
-                                    child: Text('Chickens'),
-                                  ),
-                                  SwitchListTile(
-                                      title: const Text('Are you hungry?'),
-                                      value: _pageTwo.hungry,
-                                      onChanged: (bool val) => setState(
-                                          () => _pageTwo.hungry = val)),
-                                ])))),
-                (Consumer<FormModel>(builder: (context, form, child) {
-                  return Column(children: [
-                    Text('${form.getStartAdStreet()}'),
-                    FlatButton(
-                        child: Text('Next'),
-                        color: Colors.green,
-                        onPressed: () {})
-                  ]);
-                }))
+                ApiPage(),
               ])),
           Container(
             child: Row(
@@ -192,8 +174,8 @@ class _LoginPageState extends State<LoginPage> {
                         _updatePosition(++_currentPosition);
                         _controller.nextPage(
                             duration: _kDuration, curve: _kCurve);
-                      } else if (_currentPosition == 2) {
-                        if (form.dateValidate() != 'good') {
+                      } else if (_currentPosition == 1) {
+                        if (form.dateValidate() == false) {
                           showDialog(
                               context: context,
                               builder: (context) {
@@ -203,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                                       'Shipments require a minimum of 1 day between pickup and dropoff. Please select a new pickup and/or dropoff date'),
                                   actions: <Widget>[
                                     FlatButton(
-                                      child: Text('OK'),
+                                      child: Text('Ok'),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
@@ -216,7 +198,83 @@ class _LoginPageState extends State<LoginPage> {
                           _controller.nextPage(
                               duration: _kDuration, curve: _kCurve);
                         }
-                      } else {
+                      } else if (_currentPosition == 2) {
+                        if (form.originValidate() != []) {
+                          var oEString = '';
+                          form.originValidate().forEach((val) {
+                            if (val == 1) {
+                              oEString +=
+                                  "Please provide a valid address number.\n\n";
+                            }
+                            if (val == 2) {
+                              oEString +=
+                                  "Please provide a valid street name.\n\n";
+                            }
+                            if (val == 3) {
+                              oEString +=
+                                  "Please provide a valid city name.\n\n";
+                            }
+                            if (val == 4) {
+                              oEString += "Please provide a valid zip code.";
+                            }
+                          });
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Address Error"),
+                                  content: Text(oEString),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Ok'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        }
+                      }
+                      else if (_currentPosition == 3) {
+                        if (form.destinationValidate() != []) {
+                          var dEString = '';
+                          form.destinationValidate().forEach((val) {
+                            if (val == 1) {
+                              dEString +=
+                                  "Please provide a valid address number.\n\n";
+                            }
+                            if (val == 2) {
+                              dEString +=
+                                  "Please provide a valid street name.\n\n";
+                            }
+                            if (val == 3) {
+                              dEString +=
+                                  "Please provide a valid city name.\n\n";
+                            }
+                            if (val == 4) {
+                              dEString += "Please provide a valid zip code.";
+                            }
+                          });
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Address Error"),
+                                  content: Text(dEString),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Ok'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        }
+                      }
+                      else {
                         _updatePosition(++_currentPosition);
                         _controller.nextPage(
                             duration: _kDuration, curve: _kCurve);
