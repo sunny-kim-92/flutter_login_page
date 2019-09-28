@@ -3,8 +3,6 @@ import 'package:provider/provider.dart';
 import './models/FormModel.dart';
 
 class ProductOptions extends StatefulWidget {
-  static _ProductOptionsState of(BuildContext context) =>
-      context.ancestorStateOfType(const TypeMatcher<_ProductOptionsState>());
   @override
   _ProductOptionsState createState() => _ProductOptionsState();
 }
@@ -50,11 +48,7 @@ class _ProductOptionsState extends State<ProductOptions> {
                     },
                     maxLines: 1,
                     //initialval: 'Provider.of<FormModel>(context, listen: false).getStartAdNum()',
-                    validator: (val) {
-                      if (val.isEmpty || val.length < 1) {
-                        return 'Please enter a valid address number';
-                      }
-                    },
+
                     decoration: InputDecoration(
                         labelText: 'Length (meters)',
                         hintText: 'Length (meters)',
@@ -73,11 +67,7 @@ class _ProductOptionsState extends State<ProductOptions> {
                     },
                     maxLines: 1,
                     //initialval: 'Provider.of<FormModel>(context, listen: false).getStartAdNum()',
-                    validator: (val) {
-                      if (val.isEmpty || val.length < 1) {
-                        return 'Please enter a valid address number';
-                      }
-                    },
+
                     decoration: InputDecoration(
                         labelText: 'Width (meters)',
                         hintText: 'Width (meters)',
@@ -96,11 +86,7 @@ class _ProductOptionsState extends State<ProductOptions> {
                     },
                     maxLines: 1,
                     //initialval: 'Provider.of<FormModel>(context, listen: false).getStartAdNum()',
-                    validator: (val) {
-                      if (val.isEmpty || val.length < 1) {
-                        return 'Please enter a valid address number';
-                      }
-                    },
+
                     decoration: InputDecoration(
                         labelText: 'Height (meters)',
                         hintText: 'Height (meters)',
@@ -119,11 +105,6 @@ class _ProductOptionsState extends State<ProductOptions> {
                 content: TextFormField(
                   keyboardType: TextInputType.phone,
                   autocorrect: false,
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return 'Please enter valid street name';
-                    }
-                  },
                   onSaved: (String val) {
                     formInfo.setStartAdStreet(val);
                   },

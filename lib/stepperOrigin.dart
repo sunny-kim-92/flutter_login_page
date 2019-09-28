@@ -47,11 +47,7 @@ class _StepperOriginState extends State<StepperOrigin> {
                   },
                   maxLines: 1,
                   //initialval: 'Provider.of<FormModel>(context, listen: false).getStartAdNum()',
-                  validator: (val) {
-                    if (val.isEmpty || val.length < 1) {
-                      return 'Please enter a valid address number';
-                    }
-                  },
+
                   decoration: InputDecoration(
                       labelText: 'Address number',
                       hintText: 'Address number',
@@ -69,11 +65,6 @@ class _StepperOriginState extends State<StepperOrigin> {
                 content: TextFormField(
                   keyboardType: TextInputType.phone,
                   autocorrect: false,
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return 'Please enter valid street name';
-                    }
-                  },
                   onSaved: (String val) {
                     formInfo.setStartAdStreet(val);
                   },
@@ -85,7 +76,7 @@ class _StepperOriginState extends State<StepperOrigin> {
                       labelStyle: TextStyle(
                           decorationStyle: TextDecorationStyle.solid)),
                 )),
-                Step(
+            Step(
                 title: const Text('Origin Apartment / PO Box'),
                 //subtitle: const Text('Subtitle'),
                 isActive: true,
@@ -114,11 +105,6 @@ class _StepperOriginState extends State<StepperOrigin> {
                 content: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return 'Please enter valid city';
-                    }
-                  },
                   onSaved: (String val) {
                     formInfo.setStartAdCity(val);
                   },
@@ -137,11 +123,6 @@ class _StepperOriginState extends State<StepperOrigin> {
                 content: TextFormField(
                   keyboardType: TextInputType.number,
                   autocorrect: false,
-                  validator: (val) {
-                    if (val.isEmpty || val.length < 5) {
-                      return 'Please enter valid zip code';
-                    }
-                  },
                   maxLines: 1,
                   onSaved: (String val) {
                     var startAdZip = int.parse(val);
@@ -159,7 +140,7 @@ class _StepperOriginState extends State<StepperOrigin> {
           currentStep: this.currStep,
           onStepContinue: () {
             setState(() {
-              if (currStep < 3) {
+              if (currStep < 4) {
                 currStep = currStep + 1;
               } else {
                 currStep = 0;

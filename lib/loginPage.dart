@@ -57,11 +57,9 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _controller,
                   children: <Widget>[
                 AdRadio(),
-                // ProductOptions(),
                 StepperDate(),
                 StepperOrigin(),
                 StepperDestination(),
-                // ProductOptions(),
                 Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 16),

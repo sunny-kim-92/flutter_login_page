@@ -45,11 +45,6 @@ class _StepperDestinationState extends State<StepperDestination> {
                     formInfo.setStartAdNum(startAdNum);
                   },
                   maxLines: 1,
-                  validator: (val) {
-                    if (val.isEmpty || val.length < 1) {
-                      return 'Please enter a valid address number';
-                    }
-                  },
                   decoration: InputDecoration(
                       labelText: 'Address number',
                       hintText: 'Address number',
@@ -67,11 +62,6 @@ class _StepperDestinationState extends State<StepperDestination> {
                 content: TextFormField(
                   keyboardType: TextInputType.phone,
                   autocorrect: false,
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return 'Please enter valid street name';
-                    }
-                  },
                   onSaved: (String val) {
                     formInfo.setStartAdStreet(val);
                   },
@@ -112,11 +102,6 @@ class _StepperDestinationState extends State<StepperDestination> {
                 content: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return 'Please enter valid city';
-                    }
-                  },
                   onSaved: (String val) {
                     formInfo.setStartAdCity(val);
                   },
@@ -135,11 +120,6 @@ class _StepperDestinationState extends State<StepperDestination> {
                 content: TextFormField(
                   keyboardType: TextInputType.number,
                   autocorrect: false,
-                  validator: (val) {
-                    if (val.isEmpty || val.length < 5) {
-                      return 'Please enter valid zip code';
-                    }
-                  },
                   maxLines: 1,
                   onSaved: (String val) {
                     var startAdZip = int.parse(val);
